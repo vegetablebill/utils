@@ -71,13 +71,11 @@ public class ReflectUtil {
 
 	static {
 		try {
-			_getMethod0 = Class.class.getDeclaredMethod("getMethod0",
-					String.class, Class[].class);
+			_getMethod0 = Class.class.getDeclaredMethod("getMethod0", String.class, Class[].class);
 			_getMethod0.setAccessible(true);
 		} catch (Exception ignore) {
 			try {
-				_getMethod0 = Class.class.getMethod("getMethod", String.class,
-						Class[].class);
+				_getMethod0 = Class.class.getMethod("getMethod", String.class, Class[].class);
 			} catch (Exception ignored) {
 				_getMethod0 = null;
 			}
@@ -98,8 +96,7 @@ public class ReflectUtil {
 	 *            parameter types
 	 * @return founded method, or null
 	 */
-	public static Method getMethod0(Class c, String name,
-			Class... parameterTypes) {
+	public static Method getMethod0(Class c, String name, Class... parameterTypes) {
 		try {
 			return (Method) _getMethod0.invoke(c, name, parameterTypes);
 		} catch (Exception ignore) {
@@ -132,8 +129,7 @@ public class ReflectUtil {
 		return findDeclaredMethod(c, methodName, false);
 	}
 
-	private static Method findDeclaredMethod(Class c, String methodName,
-			boolean publicOnly) {
+	private static Method findDeclaredMethod(Class c, String methodName, boolean publicOnly) {
 		if ((methodName == null) || (c == null)) {
 			return null;
 		}
@@ -180,20 +176,25 @@ public class ReflectUtil {
 	 * @param params
 	 *            parameters
 	 */
-	public static Object invoke(Class c, Object obj, String method,
-			Class[] paramClasses, Object[] params)
-			throws IllegalAccessException, NoSuchMethodException,
-			InvocationTargetException {
+	public static Object invoke(Class c, Object obj, String method, Class[] paramClasses, Object[] params)
+			throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 		Method m = c.getMethod(method, paramClasses);
 		return m.invoke(obj, params);
+	}
+
+	public static Object invokeConstructor(Class c, Class[] paramClasses, Object[] params)
+			throws SecurityException, NoSuchMethodException, IllegalAccessException, InvocationTargetException,
+			IllegalArgumentException, InstantiationException {
+		Constructor m = c.getConstructor(paramClasses);
+		m.setAccessible(true);
+		return m.newInstance(params);
 	}
 
 	/**
 	 * Invokes static method.
 	 */
-	public static Object invoke(Class c, String method, Class[] paramClasses,
-			Object[] params) throws IllegalAccessException,
-			NoSuchMethodException, InvocationTargetException {
+	public static Object invoke(Class c, String method, Class[] paramClasses, Object[] params)
+			throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 		Method m = c.getMethod(method, paramClasses);
 		return m.invoke(null, params);
 	}
@@ -210,10 +211,8 @@ public class ReflectUtil {
 	 * @param paramClasses
 	 *            method parameter types
 	 */
-	public static Object invoke(Object obj, String method,
-			Class[] paramClasses, Object[] params)
-			throws IllegalAccessException, NoSuchMethodException,
-			InvocationTargetException {
+	public static Object invoke(Object obj, String method, Class[] paramClasses, Object[] params)
+			throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 		Method m = obj.getClass().getMethod(method, paramClasses);
 		return m.invoke(obj, params);
 	}
@@ -230,15 +229,13 @@ public class ReflectUtil {
 	 *            method parameters
 	 */
 	public static Object invoke(Object obj, String method, Object... params)
-			throws IllegalAccessException, NoSuchMethodException,
-			InvocationTargetException {
+			throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 		Class[] paramClass = getClasses(params);
 		return invoke(obj, method, paramClass, params);
 	}
 
-	public static Object invoke(Class c, Object obj, String method,
-			Object... params) throws IllegalAccessException,
-			NoSuchMethodException, InvocationTargetException {
+	public static Object invoke(Class c, Object obj, String method, Object... params)
+			throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 		Class[] paramClass = getClasses(params);
 		return invoke(c, obj, method, paramClass, params);
 	}
@@ -247,8 +244,7 @@ public class ReflectUtil {
 	 * Invokes static method.
 	 */
 	public static Object invoke(Class c, String method, Object... params)
-			throws IllegalAccessException, NoSuchMethodException,
-			InvocationTargetException {
+			throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 		Class[] paramClass = getClasses(params);
 		return invoke(c, null, method, paramClass, params);
 	}
@@ -270,19 +266,15 @@ public class ReflectUtil {
 	 * @param params
 	 *            parameters
 	 */
-	public static Object invokeDeclared(Class c, Object obj, String method,
-			Class[] paramClasses, Object[] params)
-			throws IllegalAccessException, NoSuchMethodException,
-			InvocationTargetException {
+	public static Object invokeDeclared(Class c, Object obj, String method, Class[] paramClasses, Object[] params)
+			throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 		Method m = c.getDeclaredMethod(method, paramClasses);
 		m.setAccessible(true);
 		return m.invoke(obj, params);
 	}
 
-	public static Object invokeDeclared(Class c, String method,
-			Class[] paramClasses, Object[] params)
-			throws IllegalAccessException, NoSuchMethodException,
-			InvocationTargetException {
+	public static Object invokeDeclared(Class c, String method, Class[] paramClasses, Object[] params)
+			throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 		Method m = c.getDeclaredMethod(method, paramClasses);
 		m.setAccessible(true);
 		return m.invoke(null, params);
@@ -300,32 +292,27 @@ public class ReflectUtil {
 	 * @param params
 	 *            parameters
 	 */
-	public static Object invokeDeclared(Object obj, String method,
-			Class[] paramClasses, Object[] params)
-			throws IllegalAccessException, NoSuchMethodException,
-			InvocationTargetException {
+	public static Object invokeDeclared(Object obj, String method, Class[] paramClasses, Object[] params)
+			throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 		Method m = obj.getClass().getDeclaredMethod(method, paramClasses);
 		m.setAccessible(true);
 		return m.invoke(obj, params);
 	}
 
-	public static Object invokeDeclared(Object obj, String method,
-			Object... params) throws IllegalAccessException,
-			NoSuchMethodException, InvocationTargetException {
+	public static Object invokeDeclared(Object obj, String method, Object... params)
+			throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 		Class[] paramClass = getClasses(params);
 		return invokeDeclared(obj, method, paramClass, params);
 	}
 
-	public static Object invokeDeclared(Class c, Object obj, String method,
-			Object... params) throws IllegalAccessException,
-			NoSuchMethodException, InvocationTargetException {
+	public static Object invokeDeclared(Class c, Object obj, String method, Object... params)
+			throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 		Class[] paramClass = getClasses(params);
 		return invokeDeclared(c, obj, method, paramClass, params);
 	}
 
-	public static Object invokeDeclared(Class c, String method,
-			Object... params) throws IllegalAccessException,
-			NoSuchMethodException, InvocationTargetException {
+	public static Object invokeDeclared(Class c, String method, Object... params)
+			throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 		Class[] paramClass = getClasses(params);
 		return invokeDeclared(c, null, method, paramClass, params);
 	}
@@ -482,8 +469,7 @@ public class ReflectUtil {
 		return methods;
 	}
 
-	private static void addMethodIfNotExist(List<Method> allMethods,
-			Method newMethod) {
+	private static void addMethodIfNotExist(List<Method> allMethods, Method newMethod) {
 		for (Method m : allMethods) {
 			if (compareSignatures(m, newMethod)) {
 				return;
@@ -631,20 +617,17 @@ public class ReflectUtil {
 		if (!first.getName().equals(second.getName())) {
 			return false;
 		}
-		return compareParameters(first.getParameterTypes(),
-				second.getParameterTypes());
+		return compareParameters(first.getParameterTypes(), second.getParameterTypes());
 	}
 
 	/**
 	 * Compares constructor signatures: names and parameters.
 	 */
-	public static boolean compareSignatures(Constructor first,
-			Constructor second) {
+	public static boolean compareSignatures(Constructor first, Constructor second) {
 		if (!first.getName().equals(second.getName())) {
 			return false;
 		}
-		return compareParameters(first.getParameterTypes(),
-				second.getParameterTypes());
+		return compareParameters(first.getParameterTypes(), second.getParameterTypes());
 	}
 
 	public static boolean compareSignatures(Field first, Field second) {
@@ -723,8 +706,7 @@ public class ReflectUtil {
 	 * elements. Note that this bunch of <code>if</code> blocks is faster then
 	 * using a <code>HashMap</code>. todo Add generics if possible
 	 */
-	public static Object newInstance(Class type) throws IllegalAccessException,
-			InstantiationException {
+	public static Object newInstance(Class type) throws IllegalAccessException, InstantiationException {
 		if (type.isPrimitive()) {
 			if (type == int.class) {
 				return Integer.valueOf(0);
@@ -812,8 +794,7 @@ public class ReflectUtil {
 	 * one.
 	 */
 	public static boolean isAssignableFrom(Member member1, Member member2) {
-		return member1.getDeclaringClass().isAssignableFrom(
-				member2.getDeclaringClass());
+		return member1.getDeclaringClass().isAssignableFrom(member2.getDeclaringClass());
 	}
 
 	/**
@@ -1131,8 +1112,7 @@ public class ReflectUtil {
 			return Object.class;
 		}
 		if (type instanceof GenericArrayType) {
-			Type genericComponentType = ((GenericArrayType) type)
-					.getGenericComponentType();
+			Type genericComponentType = ((GenericArrayType) type).getGenericComponentType();
 			Class<?> rawType = getRawType(genericComponentType, implClass);
 			// this is sort of stupid, but there seems no other way (consider
 			// don't creating new instances each time)...
@@ -1158,8 +1138,7 @@ public class ReflectUtil {
 	/**
 	 * Resolves <code>TypeVariable</code> with given implementation class.
 	 */
-	public static Type resolveVariable(TypeVariable variable,
-			final Class implClass) {
+	public static Type resolveVariable(TypeVariable variable, final Class implClass) {
 		final Class rawType = getRawType(implClass, null);
 
 		int index = ArraysUtil.indexOf(rawType.getTypeParameters(), variable);
@@ -1183,23 +1162,19 @@ public class ReflectUtil {
 			}
 
 			final Type resolved = resolveVariable(variable, rawInterface);
-			if (resolved instanceof Class
-					|| resolved instanceof ParameterizedType) {
+			if (resolved instanceof Class || resolved instanceof ParameterizedType) {
 				return resolved;
 			}
 
 			if (resolved instanceof TypeVariable) {
 				final TypeVariable typeVariable = (TypeVariable) resolved;
-				index = ArraysUtil.indexOf(rawInterface.getTypeParameters(),
-						typeVariable);
+				index = ArraysUtil.indexOf(rawInterface.getTypeParameters(), typeVariable);
 
 				if (index < 0) {
-					throw new IllegalArgumentException("Invalid type variable:"
-							+ typeVariable);
+					throw new IllegalArgumentException("Invalid type variable:" + typeVariable);
 				}
 
-				final Type type = i < genericInterfaces.length ? genericInterfaces[i]
-						: rawType.getGenericSuperclass();
+				final Type type = i < genericInterfaces.length ? genericInterfaces[i] : rawType.getGenericSuperclass();
 
 				if (type instanceof Class) {
 					return Object.class;
@@ -1237,8 +1212,7 @@ public class ReflectUtil {
 		return sb.toString();
 	}
 
-	private static void typeToString(StringBuilder sb, Type type,
-			Set<Type> visited) {
+	private static void typeToString(StringBuilder sb, Type type, Set<Type> visited) {
 		if (type instanceof ParameterizedType) {
 			ParameterizedType parameterizedType = (ParameterizedType) type;
 			final Class<?> rawType = (Class<?>) parameterizedType.getRawType();
@@ -1362,8 +1336,7 @@ public class ReflectUtil {
 			return SECURITY_MANAGER.getCallerClass(framesToSkip);
 		}
 
-		StackTraceElement[] stackTraceElements = new Throwable()
-				.getStackTrace();
+		StackTraceElement[] stackTraceElements = new Throwable().getStackTrace();
 
 		if (framesToSkip >= 2) {
 			framesToSkip += 4;
@@ -1372,8 +1345,7 @@ public class ReflectUtil {
 		String className = stackTraceElements[framesToSkip].getClassName();
 
 		try {
-			return Thread.currentThread().getContextClassLoader()
-					.loadClass(className);
+			return Thread.currentThread().getContextClassLoader().loadClass(className);
 		} catch (ClassNotFoundException cnfex) {
 			throw new UnsupportedOperationException(className + " not found.");
 		}
@@ -1385,8 +1357,7 @@ public class ReflectUtil {
 	 */
 	public static Class getCallerClass() {
 		String className = null;
-		StackTraceElement[] stackTraceElements = new Throwable()
-				.getStackTrace();
+		StackTraceElement[] stackTraceElements = new Throwable().getStackTrace();
 
 		for (StackTraceElement stackTraceElement : stackTraceElements) {
 			className = stackTraceElement.getClassName();
@@ -1406,8 +1377,7 @@ public class ReflectUtil {
 		}
 
 		try {
-			return Thread.currentThread().getContextClassLoader()
-					.loadClass(className);
+			return Thread.currentThread().getContextClassLoader().loadClass(className);
 		} catch (ClassNotFoundException cnfex) {
 			throw new UnsupportedOperationException(className + " not found.");
 		}
